@@ -9,8 +9,8 @@ type AddressInfo struct {
 func NewAddressInfo(service int) AddressInfo {
 	// for client
 	if service == 1 {
-		return AddressInfo{"192.168.1.6", "6969", "TCP"}
+		return AddressInfo{"192.168.1.6", "6969", "tcp"}
 	}
 
-	return AddressInfo{"192.168.1.6", "6969", "TCP"}
+	return AddressInfo{"192.168.1.6", "6969", "tcp"}
 }
