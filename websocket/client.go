@@ -7,17 +7,11 @@ import (
 	"time"
 )
 
-func clientcreatemsg(addr string, msg string) []byte {
-	var arr []byte
-	copy(arr, addr+" "+msg)
-	return arr
-}
-
 func sendmsgtoserver(con net.Conn) {
 	localAddr := con.LocalAddr().String()
 
 	for i := 0; i < 4; i++ {
-		sent, serr := con.Write(clientcreatemsg(localAddr, "Hello."))
+		sent, serr := con.Write([]byte(localAddr + " says hello."))
 
 		if serr != nil {
 			fmt.Printf("Fail sending msg to host: %v\n", serr.Error())

@@ -67,14 +67,13 @@ func ClientProcessor(con net.Conn, remoteAddr string) int {
 }
 
 func servercreatemsg(msg string) []byte {
-	var arr []byte
-	copy(arr, "Server say "+msg)
-	return arr
+	return []byte("Server say " + msg)
 }
 
 func sendmsgtoclient(con net.Conn, remoteAddr string) {
 	for {
-		sent, err := con.Write([]byte{})
+		msg := []byte("Server say hello.")
+		sent, err := con.Write(msg)
 
 		if err != nil {
 			fmt.Printf("Error sending msg: %v\n", err.Error())
