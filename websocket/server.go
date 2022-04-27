@@ -5,6 +5,7 @@ import (
 	"net"
 	"os"
 	"sync"
+	"time"
 )
 
 func StartServer() {
@@ -81,6 +82,7 @@ func sendmsgtoclient(con net.Conn, remoteAddr string) {
 		}
 
 		fmt.Println("msg sent to " + remoteAddr)
+		time.Sleep(time.Microsecond * 1000)
 	}
 }
 
