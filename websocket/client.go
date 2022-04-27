@@ -17,14 +17,14 @@ func sendmsgtoserver(con net.Conn) {
 	localAddr := con.LocalAddr().String()
 
 	for i := 0; i < 4; i++ {
-		_, serr := con.Write(clientcreatemsg(localAddr, "Hello."))
+		sent, serr := con.Write(clientcreatemsg(localAddr, "Hello."))
 
 		if serr != nil {
 			fmt.Printf("Fail sending msg to host: %v\n", serr.Error())
 			break
 		}
 
-		fmt.Println("msg sent.")
+		fmt.Printf("%v bytes sent.\n", sent)
 		time.Sleep(time.Millisecond * 500)
 	}
 }

@@ -36,9 +36,9 @@ func StartServer() {
 		remoteAddr := con.RemoteAddr().String()
 		fmt.Println(remoteAddr + " connected to server.")
 
-		go func() {
-			ClientProcessor(con, remoteAddr)
-		}()
+		go func(c net.Conn, s string) {
+			ClientProcessor(c, s)
+		}(con, remoteAddr)
 	}
 }
 
@@ -47,12 +47,12 @@ func ClientProcessor(con net.Conn, remoteAddr string) int {
 	wg.Add(2)
 
 	go func() {
-		sendmsgtoclient(con, remoteAddr)
+		revcmsgfromclient(con, remoteAddr)
 		wg.Done()
 	}()
 
 	go func() {
-		revcmsgfromclient(con, remoteAddr)
+		sendmsgtoclient(con, remoteAddr)
 		wg.Done()
 	}()
 
@@ -74,15 +74,15 @@ func servercreatemsg(msg string) []byte {
 
 func sendmsgtoclient(con net.Conn, remoteAddr string) {
 	for {
-		_, err := con.Write([]byte{})
+		sent, err := con.Write([]byte{})
 
 		if err != nil {
 			fmt.Printf("Error sending msg: %v\n", err.Error())
 			return
 		}
 
-		fmt.Println("msg sent to " + remoteAddr)
-		time.Sleep(time.Microsecond * 1000)
+		fmt.Printf("%v bytes sent to %v\n", sent, remoteAddr)
+		time.Sleep(time.Second * 2)
 	}
 }
 
@@ -98,5 +98,6 @@ func revcmsgfromclient(con net.Conn, remoteAddr string) {
 		}
 
 		fmt.Printf("msg received from %v: %v\n", remoteAddr, string(buff[:len]))
+		time.Sleep(time.Second * 2)
 	}
 }
