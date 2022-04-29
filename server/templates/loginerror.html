@@ -24,21 +24,35 @@
         style="font-style: italic;font-size: 15px;color:Tomato; visibility: hidden">
         Username or Password cannot be blank.
     </p>
+    <p  style="font-style: italic;font-size: 15px;color:Tomato;">
+        {{.}}
+    </p>
     <a href="/register">Don't have account yet? Register</a>
 <!--=====================================================================-->
 <script>
+    
+    const pageAccessedByReload = (
+        (PerformanceNavigationTiming && PerformanceNavigationTiming.TYPE === 1) ||
+          window.performance
+            .getEntriesByType('navigation')
+            .map((nav) => nav.type)
+            .includes('reload')
+      );
+
+      if (pageAccessedByReload) {
+        alert("DUMA");
+        window.location.href = "/register";
+      }
+
     function Initialize() {
-        var errlogin = {{.ErrorLogin}}
-        alert(errlogin);
     }
     function checkUsername(e) {
         var un = document.getElementById('username').value
-        var pa = document.getElementById('password').value
         var wn = document.getElementById("warning");
 
-        if (un == "" || pa == "") {
+        if (un == "") {
             wn.style.visibility = "visible";
-            e.preventDefault();
+            //e.preventDefault();
             return false;
         } 
 
