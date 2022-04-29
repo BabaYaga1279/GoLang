@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Website - Chat room</title>
+    <meta charset="UTF-8">
+<!--=====================================================================-->
+<style>
+/* Chat containers */
+.container {
+  border: 2px solid #dedede;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+/* Darker chat container */
+.darker {
+  border-color: #ccc;
+  background-color: #ddd;
+}
+
+/* Clear floats */
+.container::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+
+/* Style images */
+.container img {
+  float: left;
+  max-width: 60px;
+  width: 100%;
+  margin-right: 20px;
+  border-radius: 50%;
+}
+
+/* Style the right image */
+.container img.right {
+  float: right;
+  margin-left: 20px;
+  margin-right:0;
+}
+
+/* Style time text */
+.time-right {
+  float: right;
+  color: #aaa;
+}
+
+/* Style time text */
+.time-left {
+  float: left;
+  color: #999;
+}
+</style>
+</head>
+<body>
+<!--=====================================================================-->
+    <h1>Chat room</h1>
+
+    <div style="width:30%; max-height:50vh;overflow-y:scroll;" id="chat-box">
+        <div class="container">
+            <img src="../images/avatar.png" alt="Avatar">
+            <p>Hello. How are you today?</p>
+            <span class="time-right">11:00</span>
+            <span class="time-left">remote-user</span>
+        </div>
+
+        <div class="container darker">
+            <img src="../images/avatar.png" alt="Avatar" class="right">
+            <p>Hey! I'm fine. Thanks for asking!</p>
+            <span class="time-left">11:01</span>
+            <span class="time-right">user</span>
+        </div>
+
+        <div class="container">
+            <img src="../images/avatar.png" alt="Avatar">
+            <p>Sweet! So, what do you wanna do today?</p>
+            <span class="time-right">11:02</span>
+            <span class="time-left">remote-user</span>
+        </div>
+
+        <div class="container darker">
+            <img src="../images/avatar.png" alt="Avatar" class="right">
+            <p>Nah, I dunno. Play soccer.. or learn more coding perhaps?</p>
+            <span class="time-left">11:05</span>
+            <span class="time-right">user</span>
+        </div>
+    </div>
+
+    <div class="message-box">
+        <textarea type="text" id="user-input" placeholder="Type message..."></textarea>
+        <button type="submit" id="user-submit" onclick="userchat()">Send</button>
+      </div>
+    
+
+<!--=====================================================================-->
+<script>
+    function chatdivmaker(mode) {
+        // 0 for user, 1 for remote user
+        var d = document.createElement("div");
+        
+        if (mode == 0) {
+            d.setAttribute("class", "container darker");
+        } else {
+            d.setAttribute("class", "container");
+        }
+
+        return d;
+    }
+
+    function chatimgmaker(mode) {
+        var i = document.createElement("img");
+        i.src="../images/avatar.png";
+        i.alt="Avatar";
+
+        if (mode == 0) {
+            i.setAttribute("class", "right");
+        }
+
+        return i;
+    }
+
+    function charparmaker(text) {
+        var p = document.createElement("p");
+        p.innerHTML = text;
+
+        return p;
+    }
+
+    function chattimemaker(mode, time) {
+        var s = document.createElement("span");
+        s.innerHTML = time;
+        s.setAttribute("class", "time-right");
+        if (mode == 0) {
+            s.setAttribute("class", "time-left");
+        }
+
+        return s;
+    }
+
+    function chatmaker(mode, text, time, name) {
+        var d = chatdivmaker(mode);
+        d.appendChild(chatimgmaker(mode));
+        d.appendChild(charparmaker(text));
+        d.appendChild(chattimemaker(mode, time));
+        d.appendChild(chattimemaker(1-mode, name));
+
+        return d;
+    }
+
+    function updatechat(mode, text, time, name) {
+        if (text == "") {
+            return;
+        }
+        var d = document.getElementById("chat-box");
+        d.appendChild(chatmaker(mode, text, time, name));
+        d.scrollTop = d.scrollHeight;
+    }
+
+    function userchat() {
+        var mode = 0;
+        var time = "09:30";
+        var ta = document.getElementById("user-input");
+        var text = ta.value;
+        var name = "user";
+
+        updatechat(mode, text, time, name);
+        ta.value = '';
+    }
+
+    function remoteuserchat() {
+        var mode = 1;
+        var time = "09:30";
+        var text = "something from remote user.";
+        var name = "remote-user";
+        updatechat(mode, text, time);
+    }
+
+    var userinput = document.getElementById("user-input");
+    userinput.addEventListener("keypress", function(e) {
+        if (e.key == "Enter") {
+            event.preventDefault();
+            document.getElementById("user-submit").click();
+        }
+    })
+</script>
+</body>
+</html>
