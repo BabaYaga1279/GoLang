@@ -1,13 +1,18 @@
 package testing
 
 import (
-	"github.com/BabaYaga1279/GoLang/websocket"
+	"github.com/BabaYaga1279/GoLang/httpserver"
+	"github.com/BabaYaga1279/GoLang/socket"
 )
 
-func TestServer() {
-	websocket.StartServer()
+func TestSocketServer() {
+	socket.StartServer()
 }
 
-func TestClient() {
-	websocket.StartClient()
+func TestSocketClient() {
+	socket.StartClient()
+}
+
+func TestHTTPServer() {
+	httpserver.Test()
 }

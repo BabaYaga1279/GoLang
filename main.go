@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	testing.TestServer()
+	testing.TestHTTPServer()
 }
