@@ -2,6 +2,7 @@ package testing
 
 import (
 	"github.com/BabaYaga1279/GoLang/httpserver"
+	"github.com/BabaYaga1279/GoLang/server"
 	"github.com/BabaYaga1279/GoLang/socket"
 )
 
@@ -15,4 +16,8 @@ func TestSocketClient() {
 
 func TestHTTPServer() {
 	httpserver.Test()
+}
+
+func TestServer() {
+	server.StartServer()
 }

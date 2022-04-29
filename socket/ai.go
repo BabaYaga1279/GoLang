@@ -1,4 +1,4 @@
-package websocket
+package socket
 
 type AddressInfo struct {
 	HOST string

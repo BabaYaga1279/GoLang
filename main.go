@@ -6,6 +6,6 @@ import (
 
 func main() {
 
-	testing.TestHTTPServer()
+	testing.TestServer()
 
 }

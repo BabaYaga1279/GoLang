@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Website - Login</title>
+    <title>Website - Register</title>
     <meta charset="UTF-8">
 <!--=====================================================================-->
 <style>
@@ -10,21 +10,24 @@
 </head>
 <body>
 <!--=====================================================================-->
-    <h1>Login form</h1>
-    <form onsubmit="return checkUsername(event)" action="/login" method="post">
+    <h1>Register form</h1>
+    <form onsubmit="return checkUsername(event)">
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username" value=""><br><br>
         <label for="password">Password:</label><br>
         <input type="text" id="passwprd" name="password" value=""><br><br>
-        <input id="button" type="submit" value="login">
+        <label for="repassword">Retype Your Password:</label><br>
+        <input type="text" id="repasswprd" name="repassword" value=""><br><br>
+        <input id="button" type="submit" value="Submit">
         <br>
     </form> 
 
     <p  id="warning" 
         style="font-style: italic;font-size: 15px;color:Tomato; visibility: hidden">
         Username cannot be blank.
-    </p>
-    <a href="/register">Don't have account yet? Register</a>
+    </p> 
+    
+    <a href="/login">Already have an account? Login</a>
 <!--=====================================================================-->
 <script>
     function checkUsername(e) {
@@ -39,7 +42,7 @@
 
         wn.style.visibility = "hidden";
         //location.replace("./chatroom.html")
-        //window.open('./chatroom.html');
+        window.open('./chatroom.html');
         return true;
     }
 </script>
