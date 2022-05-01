@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"reflect"
 	"strings"
-	"text/template"
 )
 
 // rounter
@@ -24,7 +23,7 @@ func MuxGet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if r.URL.Path == "/login" || r.URL.Path == "/register" {
-		MuxGetHTML(w, r.URL.Path, "")
+		GetHTML(w, r, r.URL.Path, nil)
 		return
 	}
 
@@ -32,23 +31,13 @@ func MuxGet(w http.ResponseWriter, r *http.Request) {
 	http.NotFound(w, r)
 }
 
-func MuxGetHTML(w http.ResponseWriter, path string, data any) {
-	tmpl, err := template.ParseFiles(TemplateFilesPath + path + ".html")
-
-	if err != nil {
-		fmt.Println("Error loading html: ", err.Error())
-		return
-	}
-
-	tmpl.Execute(w, data)
-}
-
 func MuxPost(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	if r.URL.Path == "/login" {
-		fmt.Println("username: ", r.Form["username"], reflect.TypeOf(r.Form["username"]))
+		fmt.Println("username: ", r.Form["username"])
 		fmt.Println("password: ", r.Form["password"])
+		fmt.Println("token: ", r.Form["Token"])
 
 		err := ""
 		if len(r.Form["username"]) != 1 || len(r.Form["password"]) != 1 {
@@ -62,7 +51,9 @@ func MuxPost(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		MuxGetHTML(w, r.URL.Path+"error", err)
+		data := make(map[string]any)
+		data["ErrorLogin"] = err
+		GetHTML(w, r, r.URL.Path, data)
 
 		return
 	}

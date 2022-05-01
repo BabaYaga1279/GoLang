@@ -8,7 +8,7 @@
 
 </style>
 </head>
-<body onload="Initialize()">
+<body>
 <!--=====================================================================-->
     <h1>Login form</h1>
     <form onsubmit="return checkUsername(event)" action="/login" method="post">
@@ -16,6 +16,9 @@
         <input type="text" id="username" name="username" value=""><br><br>
         <label for="password">Password:</label><br>
         <input type="text" id="password" name="password" value=""><br><br>
+        {{if (index . "Token") }}
+        <input id="Token" type="hidden" name="Token" value="{{(index . "Token")}}">
+        {{end}}
         <input id="button" type="submit" value="login">
         <br>
     </form> 
@@ -24,19 +27,36 @@
         style="font-style: italic;font-size: 15px;color:Tomato; visibility: hidden">
         Username or Password cannot be blank.
     </p>
+
+    {{if (index . "ErrorLogin") }}
+    <p  id="errorlogin" style="font-style: italic;font-size: 15px;color:Tomato;">
+        {{(index . "ErrorLogin")}}
+    </p>
+    {{end}}
+
     <a href="/register">Don't have account yet? Register</a>
 <!--=====================================================================-->
 <script>
-    function Initialize() {
-        var errlogin = {{.ErrorLogin}}
-        alert(errlogin);
+    window.onload = function() {
+        var reloading = sessionStorage.getItem("reloading");
+        if (reloading) {
+            sessionStorage.removeItem("reloading");
+            //myFunction();
+        } else {
+            sessionStorage.setItem("reloading", true);
+        }
+    }
+    window.beforeunload = function() {
+        //sessionStorage.setItem("errorlogin", null);
     }
     function checkUsername(e) {
         var un = document.getElementById('username').value
         var pa = document.getElementById('password').value
         var wn = document.getElementById("warning");
+        var tk = document.getElementById('Token')
 
         if (un == "" || pa == "") {
+            wn.value = "Username or Password cannot be blank.";
             wn.style.visibility = "visible";
             e.preventDefault();
             return false;
@@ -45,6 +65,19 @@
         wn.style.visibility = "hidden";
         //location.replace("./chatroom.html")
         //window.open('./chatroom.html');
+
+        if (tk==null) {
+            e.preventDefault();
+            return false;
+        } else {
+            if (sessionStorage.getItem(tk.value) != null) {
+                //alert(tk.value)
+                e.preventDefault();
+                return false;
+            }
+            sessionStorage.setItem(tk.value, "login");
+        }
+
         return true;
     }
 </script>
