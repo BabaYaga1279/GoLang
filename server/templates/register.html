@@ -11,38 +11,64 @@
 <body>
 <!--=====================================================================-->
     <h1>Register form</h1>
-    <form onsubmit="return checkUsername(event)">
+    <form onsubmit="return checkUsername(event)" action="/register" method="post">
+        <label for="fullname">Fullname:</label><br>
+        <input type="text" id="fullname" name="fullname" value=""><br><br>
         <label for="username">Username:</label><br>
         <input type="text" id="username" name="username" value=""><br><br>
         <label for="password">Password:</label><br>
-        <input type="text" id="passwprd" name="password" value=""><br><br>
+        <input type="text" id="password" name="password" value=""><br><br>
         <label for="repassword">Retype Your Password:</label><br>
-        <input type="text" id="repasswprd" name="repassword" value=""><br><br>
-        <input id="button" type="submit" value="Submit">
+        <input type="text" id="repassword" name="repassword" value=""><br><br>
+        {{if (index . "Token") }}
+        <input id="Token" type="hidden" name="Token" value="{{(index . "Token")}}">
+        {{end}}
+        <input id="button" type="submit" value="register">
         <br>
     </form> 
 
     <p  id="warning" 
         style="font-style: italic;font-size: 15px;color:Tomato; visibility: hidden">
-        Username cannot be blank.
+        wtf.
     </p> 
+
+    {{if (index . "ErrorRegister") }}
+    <p  id="errorregister" style="font-style: italic;font-size: 15px;color:Tomato;">
+        {{(index . "ErrorRegister")}}
+    </p>
+    {{end}}
     
-    <a href="/login">Already have an account? Login</a>
+    <p>Already have an account?&nbsp;<a href="/login">Login</a></p>
 <!--=====================================================================-->
 <script>
     function checkUsername(e) {
-        var un = document.getElementById('username').value
+        var un = document.getElementById('username').value;
+        var pa = document.getElementById('password').value;
+        var repa = document.getElementById('repassword').value;
         var wn = document.getElementById("warning");
+        var tk = document.getElementById('Token');
 
-        if (un == "") {
+        if (un == "" || pa == "" || repa == "") {
+            wn.innerHTML  = "Username or Password cannot be blank.";
             wn.style.visibility = "visible";
-            //e.preventDefault();
+            e.preventDefault();
             return false;
         } 
 
+        if (pa != repa) {
+            wn.innerHTML = "your retyped password is not the same as your password";
+            wn.style.visibility = "visible";
+            e.preventDefault();
+            return false;
+        }
+
         wn.style.visibility = "hidden";
-        //location.replace("./chatroom.html")
-        window.open('./chatroom.html');
+
+        if (tk==null || tk.value=="") {
+            e.preventDefault();
+            return false;
+        }
+
         return true;
     }
 </script>

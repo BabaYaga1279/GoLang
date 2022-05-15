@@ -35,26 +35,12 @@ func MuxPost(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 
 	if r.URL.Path == "/login" {
-		fmt.Println("username: ", r.Form["username"])
-		fmt.Println("password: ", r.Form["password"])
-		fmt.Println("token: ", r.Form["Token"])
+		PostLogin(w, r)
+		return
+	}
 
-		err := ""
-		if len(r.Form["username"]) != 1 || len(r.Form["password"]) != 1 {
-			err = "Wrong format of username or password."
-		} else if db.Accounts[r.Form["username"][0]] == "" {
-			err = "Username: " + r.Form["username"][0] + " doesn't exist in database."
-		} else if db.Accounts[r.Form["username"][0]] != r.Form["password"][0] {
-			err = "Wrong Password."
-		} else {
-			http.Redirect(w, r, "/chatroom", http.StatusSeeOther)
-			return
-		}
-
-		data := make(map[string]any)
-		data["ErrorLogin"] = err
-		GetHTML(w, r, r.URL.Path, data)
-
+	if r.URL.Path == "/register" {
+		PostRegister(w, r)
 		return
 	}
 	// 404
@@ -90,12 +76,7 @@ func SayHello(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Hello user!")
 }
 
-var db database
-
 func StartServer() {
-	db = NewDatabase()
-
-	db.Accounts["admin"] = "admin"
 
 	//http.HandleFunc("/", SayHello)           // set router
 	mux := &UrlMux{}

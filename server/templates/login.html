@@ -25,7 +25,7 @@
 
     <p  id="warning" 
         style="font-style: italic;font-size: 15px;color:Tomato; visibility: hidden">
-        Username or Password cannot be blank.
+        wtf.
     </p>
 
     {{if (index . "ErrorLogin") }}
@@ -34,29 +34,17 @@
     </p>
     {{end}}
 
-    <a href="/register">Don't have account yet? Register</a>
+    <p>Don't have account yet?&nbsp;<a href="/register"> Register</a></p>
 <!--=====================================================================-->
 <script>
-    window.onload = function() {
-        var reloading = sessionStorage.getItem("reloading");
-        if (reloading) {
-            sessionStorage.removeItem("reloading");
-            //myFunction();
-        } else {
-            sessionStorage.setItem("reloading", true);
-        }
-    }
-    window.beforeunload = function() {
-        //sessionStorage.setItem("errorlogin", null);
-    }
     function checkUsername(e) {
-        var un = document.getElementById('username').value
-        var pa = document.getElementById('password').value
+        var un = document.getElementById('username').value;
+        var pa = document.getElementById('password').value;
         var wn = document.getElementById("warning");
-        var tk = document.getElementById('Token')
+        var tk = document.getElementById('Token');
 
         if (un == "" || pa == "") {
-            wn.value = "Username or Password cannot be blank.";
+            wn.innerHTML = "Username or Password cannot be blank.";
             wn.style.visibility = "visible";
             e.preventDefault();
             return false;
@@ -66,16 +54,9 @@
         //location.replace("./chatroom.html")
         //window.open('./chatroom.html');
 
-        if (tk==null) {
+        if (tk==null || tk.value=="") {
             e.preventDefault();
             return false;
-        } else {
-            if (sessionStorage.getItem(tk.value) != null) {
-                //alert(tk.value)
-                e.preventDefault();
-                return false;
-            }
-            sessionStorage.setItem(tk.value, "login");
         }
 
         return true;
